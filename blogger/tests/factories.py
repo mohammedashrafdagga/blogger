@@ -12,6 +12,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = "test"
     is_superuser = True
     is_staff = True
+    # tags =
 
 
 # create post Factory
@@ -24,3 +25,11 @@ class PostFactory(factory.django.DjangoModelFactory):
     author = factory.SubFactory(UserFactory)
     content = "x"
     slug = "x"
+
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            self.tags.add(*extracted)
