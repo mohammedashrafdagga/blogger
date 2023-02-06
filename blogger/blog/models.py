@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from taggit.managers import TaggableManager
+
 
 # Create your models here.
 class Post(models.Model):
@@ -16,6 +18,9 @@ class Post(models.Model):
     update_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_OPTION, default="draft")
     tags = TaggableManager()
+
+    def get_absolute_url(self):
+        return reverse("blog:post_single", args=[self.slug])
 
     class Meta:
         ordering = ("-create_at",)
